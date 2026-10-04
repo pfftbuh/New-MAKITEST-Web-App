@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'modify_exam' prep.exam.pk %}">{{ prep.exam.title }}</a> / Staff diagnostics</p>
-<h1>Tracking diagnostics</h1>
+<a href="{% url 'modify_exam' prep.exam.pk %}">{{ prep.exam.title }}</a> / Staff Diagnostics</p>
+<h1>Tracking Diagnostics</h1>
 <p class="sub">Read-only estimates from the existing student session. No additional tracking session is created.</p>
 <div class="grid">
 <section class="card">
-<h2>Estimated screen position</h2>
+<h2>Estimated Screen Position</h2>
 <p id="blend-legend">Green: head · Red: eyes · Blue: combined</p>
 <div class="diag-screen">
 <i id="head" class="diag-dot head" hidden>
@@ -19,7 +19,7 @@
 <p id="diag-status" role="status">Waiting for live session data…</p>
 </section>
 <section class="card">
-<h2>Camera diagnostic view</h2>
+<h2>Camera Diagnostic View</h2>
 <img id="debug" class="question-image" alt="Annotated camera diagnostic view" hidden>
 </section>
 </div>

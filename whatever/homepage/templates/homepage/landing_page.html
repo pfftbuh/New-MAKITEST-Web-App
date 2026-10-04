@@ -3,21 +3,21 @@
 <div class="grid">
 <section>
 <p class="muted">Online exams for your classroom</p>
-<h1>A clear place to take your next exam.</h1>
+<h1>A Clear Place To Take Your Next Exam.</h1>
 <p class="sub">MAKITEST brings exam questions, camera setup, and results into one guided experience.</p>
 <div class="actions">
 {% if user.role == 'student' %}
-<a class="btn" href="{% url 'student_home' %}">Go to my exams</a>
+<a class="btn" href="{% url 'student_home' %}">Go To My Exams</a>
 {% elif user.role == 'teacher' %}
-<a class="btn" href="{% url 'teacher_home' %}">Open teacher overview</a>
+<a class="btn" href="{% url 'teacher_home' %}">Open Teacher Overview</a>
 {% else %}
-<a class="btn" href="{% url 'login' %}">Log in</a>
-<a class="btn ghost" href="{% url 'signup' %}">Create account</a>
+<a class="btn" href="{% url 'login' %}">Log In</a>
+<a class="btn ghost" href="{% url 'signup' %}">Create Account</a>
 {% endif %}
 </div>
 </section>
 <section class="card">
-<h2>Know what to expect</h2>
+<h2>Know What To Expect</h2>
 <ol>
 <li>Read your exam instructions.</li>
 <li>Check your camera and complete guided setup.</li>

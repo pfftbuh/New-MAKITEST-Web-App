@@ -9,17 +9,17 @@
 <p class="sub">{{ exam.description }}</p>
 <div class="grid">
 <section class="card">
-<h2>Before you begin</h2>
+<h2>Before You Begin</h2>
 <div class="meta">
 <span>
-<strong>{{ duration_minutes }} minutes</strong>
+<strong>{{ duration_minutes }} Minutes</strong>
 </span>
 <span>{{ attempts_used }} attempts used</span>
 </div>
 <p>
 <strong>Deadline: {{ exam.deadline|date:'M j, Y, g:i A' }} PHT.</strong> The exam ends at this deadline, even if your timer has time remaining.</p>
 <p>Your timer starts after camera setup, when you choose Start exam. Setup does not use an attempt.</p>
-<h3>Get ready</h3>
+<h3>Get Ready</h3>
 <ul>
 <li>Use a laptop or desktop with a working webcam.</li>
 <li>Close other apps that use your camera.</li>
@@ -27,7 +27,7 @@
 </ul>
 </section>
 <section class="card">
-<h2>How monitoring works</h2>
+<h2>How Monitoring Works</h2>
 <p>Camera frames are sent to the server to estimate head movement, eye gaze, and face visibility. Selected keyboard events, window focus changes, and hidden tabs are also reported.</p>
 <p>Event logs, gaze heatmaps, and clips around flagged events are saved for authorized teacher review. Your microphone is not used.</p>
 <p class="muted">Monitoring supports human review. These signals alone do not prove misconduct.</p>
@@ -36,7 +36,7 @@
 <input type="hidden" name="exam_id" value="{{ exam.pk }}">
 {% if exam.access_code %}
 <div class="field">
-<label for="access-code">Exam access code</label>
+<label for="access-code">Exam Access Code</label>
 <input id="access-code" name="access_code" autocomplete="off" required aria-describedby="code-help">
 <small id="code-help">Use the code your teacher shared.</small>
 </div>
@@ -44,9 +44,9 @@
 {% if error %}
 <p class="field-error" role="alert">{{ error }}</p>
 {% endif %}
-<button class="primary">Continue to camera setup</button>
+<button class="primary">Continue To Camera Setup</button>
 </form>
 </section>
 </div>
-<a href="{% url 'student_home' %}">Back to my exams</a>
+<a href="{% url 'student_home' %}">Back To My Exams</a>
 {% endblock %}

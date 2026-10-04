@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% block main_class %}narrow{% endblock %}
 {% block content %}
-<h1>Log in</h1>
+<h1>Log In</h1>
 <p class="sub">Welcome back. Use your school account details.</p>
 <div class="card">
 <form method="post" novalidate>
 {% csrf_token %}
 <input type="hidden" name="next" value="{{ next }}">
 {% include "form_fields.html" %}
-<button class="primary">Log in</button>
+<button class="primary">Log In</button>
 </form>
 </div>
-<p class="foot">No account yet? <a href="{% url "signup" %}">Create an account</a>
+<p class="foot">No account yet? <a href="{% url "signup" %}">Create an Account</a>
 </p>
 {% endblock %}

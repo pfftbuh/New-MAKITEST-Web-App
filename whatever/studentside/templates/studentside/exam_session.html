@@ -11,7 +11,7 @@
 <div id="exam" data-attempt="{{ attempt.pk }}" data-session="{{ attempt.proctoring_session_id }}" data-state="{% url 'attempt_state' attempt.pk %}" data-save="{% url 'save_exam_answers' attempt.pk %}" data-expiry="{{ expiry }}" data-now="{{ server_now }}" data-camera="{{ camera_id }}">
 <div class="exam-toolbar">
 <div>
-<strong id="answered-count">0 of {{ questions|length }} answered</strong>
+<strong id="answered-count">0 Of {{ questions|length }} Answered</strong>
 <div id="save-status" class="muted" role="status">Connecting to answer saving…</div>
 </div>
 <div>
@@ -22,7 +22,7 @@
 </div>
 <div id="writer-conflict" class="notice warning" hidden>
 <p>This exam is active in another tab or device. Answers are read-only here.</p>
-<button id="takeover" class="btn ghost">Continue in this tab</button>
+<button id="takeover" class="btn ghost">Continue in This Tab</button>
 </div>
 <div class="exam-layout">
 <section>
@@ -37,7 +37,7 @@
 <legend>Question {{ forloop.counter }}</legend>
 <p class="question-text">{{ question.question_text }}</p>
 {% if question.question_image %}
-<button class="image-button" type="button" data-enlarge aria-label="Enlarge question {{ forloop.counter }} image">
+<button class="image-button" type="button" data-enlarge aria-label="Enlarge Question {{ forloop.counter }} Image">
 <img class="question-image" src="{{ question.question_image.url }}" alt="{{ question.image_description|default:'Question illustration; ask your teacher for a description if needed.' }}">
 <small>Enlarge image</small>
 </button>
@@ -58,15 +58,15 @@
 <label class="choice-label">
 <input type="radio" name="question_{{ question.pk }}" value="False" {% if question.saved_answer == 'False' %}checked{% endif %}>False</label>
 {% else %}
-<label for="answer-{{ question.pk }}">Your answer</label>
+<label for="answer-{{ question.pk }}">Your Answer</label>
 <input id="answer-{{ question.pk }}" name="question_{{ question.pk }}" value="{{ question.saved_answer }}" {% if question.question_type == 'NUM' %}inputmode="decimal"{% endif %} autocomplete="off">
 {% endif %}
-<button class="link" type="button" data-clear="{{ question.pk }}">Clear answer</button>
+<button class="link" type="button" data-clear="{{ question.pk }}">Clear Answer</button>
 </fieldset>
 {% endfor %}
 <div class="actions">
-<button id="review-submit" class="primary" type="button">Review and submit</button>
-<button id="leave" class="btn ghost" type="button">Leave exam</button>
+<button id="review-submit" class="primary" type="button">Review And Submit</button>
+<button id="leave" class="btn ghost" type="button">Leave Exam</button>
 </div>
 </form>
 </section>
@@ -80,36 +80,36 @@
 </div>
 </section>
 <section class="card">
-<h2>Camera status</h2>
+<h2>Camera Status</h2>
 <video id="video" class="camera monitor-preview" autoplay muted playsinline aria-label="Your camera preview">
 </video>
 <p id="camera-status" class="foot" role="status">Connecting…</p>
-<button id="retry-camera" class="btn ghost">Retry camera</button>
+<button id="retry-camera" class="btn ghost">Retry Camera</button>
 <p class="foot">Technical interruptions do not prevent answering. Your teacher can review monitoring completeness.</p>
 </section>
 </aside>
 </div>
 </div>
 <dialog id="submit-dialog" aria-labelledby="submit-title">
-<h2 id="submit-title">Ready to submit?</h2>
+<h2 id="submit-title">Ready to Submit?</h2>
 <p id="review-summary">
 </p>
 <p>You cannot change answers after submitting.</p>
 <div class="actions">
-<button id="confirm-submit" class="primary">Submit exam</button>
+<button id="confirm-submit" class="primary">Submit Exam</button>
 <form method="dialog">
-<button class="btn ghost">Keep working</button>
+<button class="btn ghost">Keep Working</button>
 </form>
 </div>
 </dialog>
 <dialog id="leave-dialog" aria-labelledby="leave-title">
-<h2 id="leave-title">Leave this exam?</h2>
+<h2 id="leave-title">Leave This Exam?</h2>
 <p>Server-saved answers remain available. The timer keeps running and the exam still ends at its deadline.</p>
 <p id="leave-save-state">
 </p>
-<a class="btn" href="{% url 'student_home' %}">Leave exam</a>
+<a class="btn" href="{% url 'student_home' %}">Leave Exam</a>
 <form method="dialog">
-<button class="btn ghost">Keep working</button>
+<button class="btn ghost">Keep Working</button>
 </form>
 </dialog>
 {% endblock %}

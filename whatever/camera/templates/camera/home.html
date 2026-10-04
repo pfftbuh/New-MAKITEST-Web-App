@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Camera setup — MAKITEST{% endblock %}
+{% block title %}Camera Setup — MAKITEST{% endblock %}
 {% block content %}
 <ol class="steps" aria-label="Exam preparation">
 <li>1. Exam details</li>
 <li aria-current="step">2. Camera setup</li>
 <li>3. Exam</li>
 </ol>
-<h1>Get your camera ready</h1>
+<h1>Get Your Camera Ready</h1>
 <p class="sub">{{ exam.title }} · Your exam timer hasn’t started.</p>
 <div id="setup" data-session="{{ prep.session_id }}" data-reset="{% url 'reset_preparation' %}" data-finalized="{{ prep.finalized_at|yesno:'true,false' }}">
 <div class="camera-layout">
 <section class="card">
-<h2>Camera check</h2>
+<h2>Camera Check</h2>
 <video id="video" class="camera" autoplay playsinline muted aria-label="Your camera preview">
 </video>
 <div class="field">
@@ -21,11 +21,11 @@
 <option value="">Default camera</option>
 </select>
 </div>
-<button id="enable-camera" class="btn ghost">Enable camera</button>
+<button id="enable-camera" class="btn ghost">Enable Camera</button>
 <p id="camera-status" class="foot" role="status">Choose Enable camera. Your browser will ask for permission.</p>
 </section>
 <section class="card">
-<h2>A quick, guided setup</h2>
+<h2>A Quick, Guided Setup</h2>
 <ol>
 <li>Sit comfortably and keep your face visible.</li>
 <li>First, look at the camera to set your starting position.</li>
@@ -33,18 +33,18 @@
 <li>After a point finishes, press Space to continue.</li>
 </ol>
 <p>The camera check helps confirm visibility. It does not certify tracking accuracy.</p>
-<button id="begin" class="primary" disabled>Begin calibration</button>
+<button id="begin" class="primary" disabled>Begin Calibration</button>
 <div id="ready" hidden>
-<h3>Setup complete</h3>
+<h3>Setup Complete</h3>
 <p>When you start, the timer runs until your time limit or the exam deadline.</p>
 <form id="start-form" method="post" action="{% url 'start_exam' %}">
 {% csrf_token %}
-<button id="start-exam" class="primary" type="button">Start exam</button>
+<button id="start-exam" class="primary" type="button">Start Exam</button>
 </form>
 </div>
 <div class="actions">
-<button id="restart" class="btn ghost">Restart setup</button>
-<a href="{% url 'student_home' %}">Back to my exams</a>
+<button id="restart" class="btn ghost">Restart Setup</button>
+<a href="{% url 'student_home' %}">Back To My Exams</a>
 </div>
 </section>
 </div>
@@ -54,7 +54,7 @@
 <div class="setup-instructions">
 <p id="step-count" class="muted">
 </p>
-<h2 id="cal-prompt">Look at the camera</h2>
+<h2 id="cal-prompt">Look at the Camera</h2>
 <p id="cal-status" role="status" aria-live="polite">Press Space when you are ready.</p>
 <progress id="cal-progress" class="progress" max="60" value="0" aria-label="Current point progress">
 </progress>
@@ -62,7 +62,7 @@
 <div class="setup-controls">
 <p>Press <kbd>Space</kbd> when prompted</p>
 <button id="continue" class="btn ghost">Continue</button>
-<button id="cancel" class="btn ghost">Back to camera check</button>
+<button id="cancel" class="btn ghost">Back to Camera Check</button>
 </div>
 </dialog>
 </div>

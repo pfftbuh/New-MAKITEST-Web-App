@@ -14,16 +14,16 @@
 {% endblock %}
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to Content</a>
 {% block navigation %}
-<nav aria-label="Main navigation">
+<nav aria-label="Main Navigation">
 <a class="brand" href="{% url 'landing_page' %}">MAKITEST</a>
 {% if user.role == 'student' %}
-<a href="{% url 'student_home' %}" {% if request.resolver_match.url_name == 'student_home' %}aria-current="page"{% endif %}>My exams</a>
-<a href="{% url 'my_scores' %}" {% if request.resolver_match.url_name == 'my_scores' %}aria-current="page"{% endif %}>My results</a>
+<a href="{% url 'student_home' %}" {% if request.resolver_match.url_name == 'student_home' %}aria-current="page"{% endif %}>My Exams</a>
+<a href="{% url 'my_scores' %}" {% if request.resolver_match.url_name == 'my_scores' %}aria-current="page"{% endif %}>My Results</a>
 {% elif user.role == 'teacher' %}
 <a href="{% url 'teacher_home' %}" {% if request.resolver_match.url_name == 'teacher_home' %}aria-current="page"{% endif %}>Overview</a>
-<a href="{% url 'exams_list' %}" {% if request.resolver_match.url_name == 'exams_list' %}aria-current="page"{% endif %}>My exams</a>
+<a href="{% url 'exams_list' %}" {% if request.resolver_match.url_name == 'exams_list' %}aria-current="page"{% endif %}>My Exams</a>
 <a href="{% url 'manage_students' %}" {% if request.resolver_match.url_name == 'manage_students' %}aria-current="page"{% endif %}>Students</a>
 {% endif %}
 <span class="spacer">
@@ -32,11 +32,11 @@
 <span class="who">{{ user.get_full_name|default:user.username }}</span>
 <form method="post" action="{% url 'logout' %}">
 {% csrf_token %}
-<button class="link">Log out</button>
+<button class="link">Log Out</button>
 </form>
 {% else %}
-<a href="{% url 'login' %}">Log in</a>
-<a href="{% url 'signup' %}">Create account</a>
+<a href="{% url 'login' %}">Log In</a>
+<a href="{% url 'signup' %}">Create Account</a>
 {% endif %}
 </nav>
 {% endblock %}
@@ -52,9 +52,9 @@
 {% block content %}
 {% endblock %}
 </main>
-<dialog id="image-dialog" class="image-dialog" aria-label="Enlarged question image">
+<dialog id="image-dialog" class="image-dialog" aria-label="Enlarged Question Image">
 <form method="dialog">
-<button class="btn ghost">Close image</button>
+<button class="btn ghost">Close Image</button>
 </form>
 <img alt="">
 </dialog>

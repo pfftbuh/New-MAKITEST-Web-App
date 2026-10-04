@@ -2,9 +2,9 @@
 {% load static %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'exams_list' %}">My exams</a> / <a href="{% url 'modify_exam' exam.pk %}">{{ exam.title }}</a> / Question editor</p>
+<a href="{% url 'exams_list' %}">My Exams</a> / <a href="{% url 'modify_exam' exam.pk %}">{{ exam.title }}</a> / Question Editor</p>
 <h1>
-{% if editing %}Edit question{% else %}Add a question{% endif %}
+{% if editing %}Edit Question{% else %}Add A Question{% endif %}
 </h1>
 <p class="sub">Images can support any answer type. Students answer using choices or text.</p>
 <section class="card">
@@ -12,36 +12,36 @@
 {% csrf_token %}
 {% include 'form_fields.html' %}
 <fieldset id="choices-editor">
-<legend>Multiple-choice answers</legend>
+<legend>Multiple-Choice Answers</legend>
 <p class="help">Add at least two distinct answers and mark one correct answer.</p>
 <div id="choices-list">
 {% for choice in choices %}
 <div class="choice-row">
-<label>Choice text<input name="choice_text_{{ forloop.counter }}" value="{{ choice.text }}">
+<label>Choice Text<input name="choice_text_{{ forloop.counter }}" value="{{ choice.text }}">
 </label>
 <label>
-<input type="radio" name="correct_choice" value="{{ forloop.counter }}" {% if choice.selected %}checked{% endif %}> Correct answer</label>
-<label>Choice image (optional)<input type="file" name="choice_image_{{ forloop.counter }}" accept="image/*">
+<input type="radio" name="correct_choice" value="{{ forloop.counter }}" {% if choice.selected %}checked{% endif %}> Correct Answer</label>
+<label>Choice Image (Optional)<input type="file" name="choice_image_{{ forloop.counter }}" accept="image/*">
 </label>
 <input type="hidden" name="choice_existing_{{ forloop.counter }}" value="{{ choice.image|default:'' }}">
 {% if choice.image %}
 <img class="choice-image" src="/media/{{ choice.image }}" alt="{{ choice.description|default:choice.text }}">
 {% endif %}
-<label>Image description<input name="choice_description_{{ forloop.counter }}" value="{{ choice.description }}">
+<label>Image Description<input name="choice_description_{{ forloop.counter }}" value="{{ choice.description }}">
 </label>
-<button class="btn ghost" type="button" data-remove-choice>Remove choice</button>
+<button class="btn ghost" type="button" data-remove-choice>Remove Choice</button>
 </div>
 {% endfor %}
 </div>
-<button id="add-choice" type="button" class="btn ghost">Add choice</button>
+<button id="add-choice" type="button" class="btn ghost">Add Choice</button>
 </fieldset>
 <div class="actions">
-<button class="primary">Save question</button>
-<a href="{% url 'modify_exam' exam.pk %}">Back to exam</a>
+<button class="primary">Save Question</button>
+<a href="{% url 'modify_exam' exam.pk %}">Back to Exam</a>
 </div>
 </form>
 </section>
-<h2>Questions already added ({{ questions.count }})</h2>
+<h2>Questions Already Added ({{ questions.count }})</h2>
 {% for question in questions %}
 <p>{{ forloop.counter }}. {{ question.question_text|truncatewords:20 }}</p>
 {% empty %}

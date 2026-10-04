@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'exams_list' %}">My exams</a> / Create exam</p>
-<h1>Create exam</h1>
+<a href="{% url 'exams_list' %}">My Exams</a> / Create Exam</p>
+<h1>Create Exam</h1>
 <p class="sub">Create the details first. Your exam stays closed while you add questions.</p>
 {% if form.class_designation.field.choices|length <= 1 %}
-<div class="notice warning">Assign student classes first. <a href="{% url 'manage_students' %}">Manage students</a>
+<div class="notice warning">Assign student classes first. <a href="{% url 'manage_students' %}">Manage Students</a>
 </div>
 {% endif %}
 <section class="card">
@@ -13,7 +13,7 @@
 {% csrf_token %}
 {% include 'form_fields.html' %}
 <p class="help">Deadlines use Philippine time (PHT). Students’ attempts end at the deadline, even when time remains.</p>
-<button class="primary">Create exam and add questions</button>
+<button class="primary">Create Exam And Add Questions</button>
 </form>
 </section>
 {% endblock %}
