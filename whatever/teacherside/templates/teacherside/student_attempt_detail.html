@@ -1,41 +1,52 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'exams_list' %}">My exams</a> / <a href="{% url 'exam_attempts_list' exam.pk %}">{{ exam.title }}</a> / Student attempts</p>
+<a href="{% url 'exams_list' %}">My Exams</a> / <a href="{% url 'exam_attempts_list' exam.pk %}">{{ exam.title }}</a> / Student Attempts</p>
 <h1>{{ student.get_full_name|default:student.username }}</h1>
 <p class="sub">{{ exam.title }}</p>
 <div class="notice">Camera signals and model classifications support human review. They do not establish misconduct or automatically change exam scores.</div>
 {% for attempt in attempts %}
-<section class="card">
-<h2>Attempt {{ attempt.attempt_number }}</h2>
-<div class="grid">
-<div>
-<h3>Exam result</h3>
-<p>
-{% if attempt.score is not None %}{{ attempt.score|floatformat:1 }}%{% else %}In progress{% endif %}
-</p>
-<p class="muted">
-{% if attempt.completed_at %}Submitted {{ attempt.completed_at|date:'M j, Y, g:i A' }} PHT{% endif %}
-</p>
-<h3>Monitoring</h3>
-<p>
-{% if attempt.monitoring_interrupted %}Incomplete — technical interruption{% elif not attempt.monitoring_started %}Not started{% elif not attempt.completed_at %}In progress{% else %}Session recorded{% endif %}
-</p>
-<p>{{ attempt.violation_count }} flagged events</p>
+<details class="card attempt"{% if forloop.first %} open{% endif %}>
+<summary class="attempt-summary">
+<span class="attempt-title">Attempt {{ attempt.attempt_number }}</span>
+<span class="attempt-meta">{% if attempt.completed_at %}Submitted {{ attempt.completed_at|date:'M j, Y, g:i A' }} PHT{% else %}In progress{% endif %}</span>
+<span class="attempt-chev" aria-hidden="true"></span>
+</summary>
+<div class="attempt-body">
+<div class="hero">
+<div class="hero-tile">
+<span class="hero-label">Exam Result</span>
+<span class="hero-value">{% if attempt.score is not None %}{{ attempt.score|floatformat:1 }}%{% else %}In progress{% endif %}</span>
 </div>
-<div>
-<h3>Model analysis</h3>
-<p>Status: {{ attempt.prediction_status|title }}</p>
+<div class="hero-tile">
+<span class="hero-label">Status</span>
+<span class="hero-value hero-status {% if attempt.prediction_status == 'completed' %}ok{% else %}warn{% endif %}">{{ attempt.prediction_status|title|default:"Unavailable" }}</span>
+</div>
+<div class="hero-tile">
+<span class="hero-label">Model Classification</span>
 {% if attempt.prediction_status == 'completed' %}
-<p>Model classified this session as: <strong>{{ attempt.model_display }}</strong>.</p>
-<p>Confidence in the selected class: {{ attempt.confidence_percent|floatformat:0 }}%. This is not a standardized likelihood of misconduct.</p>
+<span class="hero-value {% if 'non' in attempt.model_display|lower %}ok{% else %}bad{% endif %}">{{ attempt.model_display }}</span>
 {% else %}
-<p class="muted">A classification is unavailable until complete monitoring artifacts can be analyzed.</p>
+<span class="hero-value muted">Unavailable</span>
+{% endif %}
+</div>
+<div class="hero-tile">
+<span class="hero-label">Probability of Classification</span>
+{% if attempt.prediction_status == 'completed' %}
+<span class="hero-value">{{ attempt.confidence_percent|floatformat:0 }}%</span>
+<span class="hero-bar"><span style="width: {{ attempt.confidence_percent|floatformat:0 }}%"></span></span>
+{% else %}
+<span class="hero-value muted">&mdash;</span>
 {% endif %}
 </div>
 </div>
-{% if attempt.files %}
-<h3>Recorded event clips</h3>
+<p class="muted hero-note">
+{% if attempt.prediction_status == 'completed' %}Probability reflects confidence in the selected class and is not a standardized likelihood of misconduct.{% else %}A classification is unavailable until complete monitoring artifacts can be analyzed.{% endif %}
+</p>
+<p class="attempt-monitor"><strong>Monitoring:</strong>
+{% if attempt.monitoring_interrupted %}Incomplete — technical interruption{% elif not attempt.monitoring_started %}Not started{% elif not attempt.completed_at %}In progress{% else %}Session recorded{% endif %}
+&middot; {{ attempt.violation_count }} flagged events</p>{% if attempt.files %}
+<h3>Recorded Event Clips</h3>
 <div class="clip-grid">
 {% for filename in attempt.video_filenames %}
 <article>
@@ -43,17 +54,17 @@
 <source src="{% url 'view_session_file_indexed' attempt.proctoring_session_id 'video' forloop.counter0 %}" type="video/mp4">
 </video>
 <p class="clip-label">{{ filename }}</p>
-<a href="{% url 'download_session_file_indexed' attempt.proctoring_session_id 'video' forloop.counter0 %}">Download clip</a>
+<a href="{% url 'download_session_file_indexed' attempt.proctoring_session_id 'video' forloop.counter0 %}">Download Clip</a>
 </article>
 {% empty %}
 <p>No event clips were recorded for this session.</p>
 {% endfor %}
 </div>
 <details>
-<summary>Session files and technical details</summary>
+<summary>Session Files And Technical Details</summary>
 <p>Session {{ attempt.proctoring_session_id }}</p>
 {% if attempt.files.heatmap_image %}
-<a href="{% url 'view_session_file' attempt.proctoring_session_id 'heatmap' %}">View gaze heatmap</a>
+<a href="{% url 'view_session_file' attempt.proctoring_session_id 'heatmap' %}">View Gaze Heatmap</a>
 {% endif %}
 <div class="actions">
 {% for csv in attempt.files.session_log_csvs %}
@@ -61,17 +72,19 @@
 {% if forloop.first %}Calibration log{% elif forloop.last %}Exam log{% else %}Additional session log{% endif %}
 </a>
 {% endfor %}
-<a href="{% url 'download_all_session_files' attempt.proctoring_session_id %}">Download all evidence</a>
+<a href="{% url 'download_all_session_files' attempt.proctoring_session_id %}">Download All Evidence</a>
 </div>
 </details>
 {% else %}
 <p class="notice">Session evidence is unavailable for this attempt.</p>
 {% endif %}
 {% if attempt.has_preparation %}
-<a class="btn ghost" href="{% url 'diagnostics' attempt.proctoring_session_id %}">Staff tracking diagnostics</a>
+<a class="btn ghost" href="{% url 'diagnostics' attempt.proctoring_session_id %}">Staff Tracking Diagnostics</a>
 {% endif %}
-</section>
+</div>
+</details>
 {% empty %}
 <section class="card">No attempts found.</section>
 {% endfor %}
 {% endblock %}
+

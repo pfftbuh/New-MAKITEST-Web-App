@@ -2,15 +2,15 @@
 {% block content %}
 <div class="page-heading">
 <div>
-<h1>My exams</h1>
+<h1>My Exams</h1>
 <p class="sub">Exams you created.</p>
 </div>
-<a class="btn" href="{% url 'create_exam' %}">Create exam</a>
+<a class="btn" href="{% url 'create_exam' %}">Create Exam</a>
 </div>
-<section class="card">
 <ul class="exam-list">
 {% for exam in exams %}
-<li class="exam-item">
+<li class="card exam-card{% if exam.access_status %} open{% endif %}">
+<div class="exam-item">
 <div class="exam-info">
 <h2>{{ exam.title }}</h2>
 <p>{{ exam.description|truncatewords:20 }}</p>
@@ -24,16 +24,16 @@
 </span>
 </div>
 <div class="exam-actions">
-<a class="btn ghost" href="{% url 'modify_exam' exam.pk %}">Manage exam</a>
-<a class="btn" href="{% url 'exam_attempts_list' exam.pk %}">Review attempts</a>
+<a class="btn ghost" href="{% url 'modify_exam' exam.pk %}">Manage Exam</a>
+<a class="btn" href="{% url 'exam_attempts_list' exam.pk %}">Review Attempts</a>
+</div>
 </div>
 </li>
 {% empty %}
-<li>
-<h2>Create your first exam</h2>
+<li class="card">
+<h2>Create Your First Exam</h2>
 <p>Add its details, build the questions, then open access for your class.</p>
 </li>
 {% endfor %}
 </ul>
-</section>
 {% endblock %}

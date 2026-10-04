@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}My exams — MAKITEST{% endblock %}
+{% block title %}My Exams — MAKITEST{% endblock %}
 {% block content %}
 <h1>Hello, {{ user.first_name|default:user.username }}</h1>
 <p class="sub">
@@ -7,20 +7,20 @@
 </p>
 {% if not student_class %}
 <div class="notice warning">
-<h2>Your class hasn’t been assigned yet</h2>
+<h2>Your Class Hasn’t Been Assigned Yet</h2>
 <p>Ask your teacher to add you to your class. Then return here to find your exams.</p>
 </div>
 {% elif not exams %}
 <div class="card">
-<h2>No exams right now</h2>
+<h2>No Exams Right Now</h2>
 <p class="muted">Check back when your teacher opens the next exam.</p>
-<a href="{% url 'my_scores' %}">View previous results</a>
+<a href="{% url 'my_scores' %}">View Previous Results</a>
 </div>
 {% else %}
-<section class="card">
 <ul class="exam-list">
 {% for exam in exams %}
-<li class="exam-item">
+<li class="card exam-card{% if exam.is_accessible %} open{% endif %}">
+<div class="exam-item">
 <div class="exam-info">
 <h2>{{ exam.title }}</h2>
 <p>{{ exam.description|truncatewords:25 }}</p>
@@ -42,14 +42,14 @@
 </div>
 <div class="exam-actions">
 {% if exam.active_attempt %}
-<a class="btn" href="{% url 'exam_details' %}?exam_id={{ exam.pk }}">Resume exam</a>
+<a class="btn" href="{% url 'exam_details' %}?exam_id={{ exam.pk }}">Resume Exam</a>
 {% elif exam.is_accessible %}
-<a class="btn" href="{% url 'exam_details' %}?exam_id={{ exam.pk }}">View exam</a>
+<a class="btn" href="{% url 'exam_details' %}?exam_id={{ exam.pk }}">View Exam</a>
 {% endif %}
+</div>
 </div>
 </li>
 {% endfor %}
 </ul>
-</section>
 {% endif %}
 {% endblock %}

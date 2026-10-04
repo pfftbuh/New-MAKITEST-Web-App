@@ -4,20 +4,20 @@
 <p class="sub">Assign students to classes in the shared research directory.</p>
 <section class="card">
 <form method="get">
-<label for="search">Search students by name, username, email, or class</label>
+<label for="search">Search Students By Name, Username, Email, Or Class</label>
 <input id="search" name="search" value="{{ search_query }}">
 <div class="actions">
 <button class="primary">Search</button>
 {% if search_query %}
-<a href="{% url 'manage_students' %}">Clear search</a>
+<a href="{% url 'manage_students' %}">Clear Search</a>
 {% endif %}
 </div>
 </form>
 <p class="foot">{{ filtered_count }} shown · {{ total_count }} total students</p>
 </section>
 <section class="card table-wrap">
-<table>
-<caption>Student class assignments</caption>
+<table class="data-table">
+<caption>Student Class Assignments</caption>
 <thead>
 <tr>
 <th scope="col">Student</th>
@@ -28,15 +28,15 @@
 <tbody>
 {% for student in students %}
 <tr>
-<td>{{ student.get_full_name|default:student.username }}<small>{{ student.username }}</small>
+<td class="student-cell">{{ student.get_full_name|default:student.username }}<small>{{ student.username }}</small>
 </td>
 <td>{{ student.email }}</td>
 <td>
 <form method="post" action="{% url 'update_student_class' student.pk %}">
 {% csrf_token %}
-<label class="sr-only" for="class-{{ student.pk }}">Class for {{ student.username }}</label>
+<label class="sr-only" for="class-{{ student.pk }}">Class For {{ student.username }}</label>
 <input id="class-{{ student.pk }}" name="class_designation" maxlength="100" value="{{ student.class_designation|default:'' }}" placeholder="e.g. Grade 10-A">
-<button class="btn ghost">Save class</button>
+<button class="btn ghost">Save Class</button>
 </form>
 </td>
 </tr>

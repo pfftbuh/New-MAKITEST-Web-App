@@ -1,27 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'my_scores' %}">My results</a> / {{ exam_attempt.exam.title }}</p>
-<h1>Your exam was submitted</h1>
+<a href="{% url 'my_scores' %}">My Results</a> / {{ exam_attempt.exam.title }}</p>
+<h1>Your Exam Was Submitted</h1>
 <p class="sub">Your answers have been received.</p>
-<section class="card">
 <h2>{{ exam_attempt.exam.title }}</h2>
-<div class="grid three">
-<div>
-<p class="muted">Your score</p>
-<p class="score">{{ exam_attempt.score|floatformat:1 }}%</p>
+<div class="hero">
+<div class="hero-tile">
+<span class="hero-label">Your Score</span>
+<span class="hero-value {% if exam_attempt.score >= 80 %}ok{% elif exam_attempt.score >= 60 %}warn{% else %}bad{% endif %}">{{ exam_attempt.score|floatformat:1 }}%</span>
+<span class="hero-bar"><span style="width: {{ exam_attempt.score|floatformat:0 }}%"></span></span>
 </div>
-<div>
-<p class="muted">Attempt</p>
-<p>{{ exam_attempt.attempt_number }}</p>
+<div class="hero-tile">
+<span class="hero-label">Attempt</span>
+<span class="hero-value">{{ exam_attempt.attempt_number }}</span>
 </div>
-<div>
-<p class="muted">Submitted</p>
-<p>{{ exam_attempt.completed_at|date:'M j, Y, g:i A' }} PHT</p>
+<div class="hero-tile">
+<span class="hero-label">Submitted</span>
+<span class="hero-value" style="font-size:20px">{{ exam_attempt.completed_at|date:'M j, Y, g:i A' }} PHT</span>
 </div>
 </div>
-</section>
-<h2>Question review</h2>
+<h2>Question Review</h2>
 {% for item in questions_with_answers %}
 <section class="card">
 <div class="row-head">
@@ -38,15 +37,15 @@
 </button>
 {% endif %}
 <div class="review-answer">
-<strong>Your answer:</strong> {{ item.student_answer|default:'Not answered' }}</div>
+<strong>Your Answer:</strong> {{ item.student_answer|default:'Not answered' }}</div>
 <div class="review-answer">
-<strong>Correct answer:</strong> {{ item.question.correct_answer_text }}</div>
+<strong>Correct Answer:</strong> {{ item.question.correct_answer_text }}</div>
 </section>
 {% endfor %}
 <div class="actions">
-<a class="btn" href="{% url 'student_home' %}">Back to my exams</a>
+<a class="btn" href="{% url 'student_home' %}">Back To My Exams</a>
 {% if can_retake %}
-<a class="btn ghost" href="{% url 'exam_details' %}?exam_id={{ exam_attempt.exam.pk }}">View retake details</a>
+<a class="btn ghost" href="{% url 'exam_details' %}?exam_id={{ exam_attempt.exam.pk }}">View Retake Details</a>
 {% endif %}
 </div>
 {% endblock %}

@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'exams_list' %}">My exams</a> / {{ exam.title }}</p>
+<a href="{% url 'exams_list' %}">My Exams</a> / {{ exam.title }}</p>
 <h1>{{ exam.title }}</h1>
 <p class="sub">{{ exam.class_designation }} · {% if exam.access_status %}Open{% else %}Closed{% endif %}
 </p>
 <details {% if form.errors %}open{% endif %}>
-<summary>Exam settings</summary>
+<summary>Exam Settings</summary>
 <form method="post" novalidate>
 {% csrf_token %}
 {% include 'form_fields.html' %}
 <p class="help">Deadline changes also apply to active attempts. The original attempt duration is retained.</p>
-<button class="primary">Save settings</button>
+<button class="primary">Save Settings</button>
 </form>
 </details>
 <div class="page-heading">
 <h2>Questions ({{ questions|length }})</h2>
 {% if not frozen %}
-<a class="btn" href="{% url 'add_questions' exam.pk %}">Add question</a>
+<a class="btn" href="{% url 'add_questions' exam.pk %}">Modify Questions</a>
 {% endif %}
 </div>
 {% if frozen %}
@@ -30,7 +30,7 @@
 {% if not frozen %}
 <div class="actions">
 <a class="btn ghost" href="{% url 'edit_question' exam.pk question.pk %}">
-{% if question.question_type == 'IMG' %}Convert question{% else %}Edit question{% endif %}
+{% if question.question_type == 'IMG' %}Convert Question{% else %}Edit Question{% endif %}
 </a>
 <form method="post" action="{% url 'delete_question' question.pk %}" data-confirm-delete>
 {% csrf_token %}
@@ -49,19 +49,19 @@
 </p>
 {% endfor %}
 <p>
-<strong>Correct answer:</strong> {{ question.correct_answer_text|default:'Not set' }}</p>
+<strong>Correct Answer:</strong> {{ question.correct_answer_text|default:'Not set' }}</p>
 </section>
 {% empty %}
 <section class="card">
-<h3>No questions yet</h3>
+<h3>No Questions Yet</h3>
 <p>Add your first question before opening the exam.</p>
 </section>
 {% endfor %}
-<a class="btn ghost" href="{% url 'exam_attempts_list' exam.pk %}">Review attempts</a>
+<a class="btn ghost" href="{% url 'exam_attempts_list' exam.pk %}">Review Attempts</a>
 <dialog id="delete-dialog" aria-labelledby="delete-title">
-<h2 id="delete-title">Delete this question?</h2>
+<h2 id="delete-title">Delete This Question?</h2>
 <p>This removes the question from the exam.</p>
-<button id="delete-confirm" class="btn danger">Delete question</button>
+<button id="delete-confirm" class="btn danger">Delete Question</button>
 <form method="dialog">
 <button class="btn ghost">Cancel</button>
 </form>

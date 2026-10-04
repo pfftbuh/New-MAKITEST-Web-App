@@ -1,33 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 <p class="breadcrumbs">
-<a href="{% url 'exams_list' %}">My exams</a> / {{ exam.title }} / Attempts</p>
-<h1>Attempts for {{ exam.title }}</h1>
+<a href="{% url 'exams_list' %}">My Exams</a> / {{ exam.title }} / Attempts</p>
+<h1>Attempts For {{ exam.title }}</h1>
 <p class="sub">Scores and flagged events support different parts of your review.</p>
+<div class="hero">
+<div class="hero-tile">
+<span class="hero-label">Students Who Started</span>
+<span class="hero-value">{{ attempts_summary|length }}</span>
+</div>
+</div>
 <section class="card table-wrap">
-<table>
-<caption>Students who started this exam</caption>
+<table class="data-table">
+<caption>Students Who Started This Exam</caption>
 <thead>
 <tr>
 <th scope="col">Student</th>
 <th scope="col">Attempts</th>
-<th scope="col">Best score</th>
-<th scope="col">Flagged events</th>
+<th scope="col">Best Score</th>
+<th scope="col">Flagged Events</th>
 <th scope="col">Review</th>
 </tr>
 </thead>
 <tbody>
 {% for item in attempts_summary %}
 <tr>
-<td>{{ item.student__first_name }} {{ item.student__last_name }}<small>{{ item.student__username }}</small>
+<td class="student-cell">{{ item.student__first_name }} {{ item.student__last_name }}<small>{{ item.student__username }}</small>
 </td>
 <td>{{ item.total_attempts }}</td>
 <td>
-{% if item.best_score is not None %}{{ item.best_score|floatformat:1 }}%{% else %}In progress{% endif %}
+{% if item.best_score is not None %}<span class="pill {% if item.best_score >= 80 %}ok{% elif item.best_score >= 60 %}warn{% else %}bad{% endif %}">{{ item.best_score|floatformat:1 }}%</span>{% else %}<span class="pill">In progress</span>{% endif %}
 </td>
-<td>{{ item.total_violations|default:0 }}</td>
+<td><span class="pill {% if item.total_violations %}warn{% else %}ok{% endif %}">{{ item.total_violations|default:0 }}</span></td>
 <td>
-<a class="btn ghost" href="{% url 'student_attempt_detail' exam.pk item.student__id %}">Review attempts</a>
+<a class="btn ghost" href="{% url 'student_attempt_detail' exam.pk item.student__id %}">Review Attempts</a>
 </td>
 </tr>
 {% empty %}
