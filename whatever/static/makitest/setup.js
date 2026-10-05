@@ -59,6 +59,7 @@ function handle(data) {
     status.textContent =
       cal.message || "Keep your face visible and press Space to retry.";
     next.disabled = false;
+    next.textContent = "Retry";
     return;
   }
   if (mode === "idle") {
@@ -86,10 +87,13 @@ function handle(data) {
     calibrated = cal.calibrated;
     mode = "pointComplete";
     next.disabled = false;
-    next.textContent = calibrated ? "Finish setup" : "Continue";
+    const upcoming = directions[pending];
+    next.textContent = calibrated
+      ? "Finish setup"
+      : `Continue: look at the ${upcoming}`;
     status.textContent = calibrated
       ? "Final point complete. Press Space to finish setup."
-      : "Point complete. Press Space to continue.";
+      : `Point complete. Press Space, then look at the ${upcoming} of the screen.`;
   }
 }
 function showPoint(index) {
@@ -99,7 +103,11 @@ function showPoint(index) {
   target.style.left = coordinates[index][0];
   target.style.top = coordinates[index][1];
   document.getElementById("step-count").textContent = `Point ${index + 1} of 5`;
-  prompt.textContent = `Look at the ${directions[index]} target`;
+  prompt.textContent =
+    index === 0
+      ? "Look at the center of the screen"
+      : `Look at the ${directions[index]} of the screen`;
+  next.textContent = `Looking at the ${directions[index]}…`;
   progress.value = 0;
   next.disabled = true;
   let seconds = 2;
@@ -121,6 +129,7 @@ function showPoint(index) {
     ) {
       mode = "pointWaiting";
       next.disabled = false;
+      next.textContent = "Retry";
       status.textContent =
         "We need a clear view of your face and eyes. Adjust your position and press Space to retry.";
       return;
@@ -154,8 +163,13 @@ begin.onclick = () => {
     mode = "baselineWaiting";
     current = -1;
     document.getElementById("step-count").textContent = "Starting position";
-    prompt.textContent = "Sit comfortably and look at the camera";
-    status.textContent = "Press Space to set your starting position.";
+    prompt.textContent = "Look at the center of the screen";
+    status.textContent =
+      "Sit comfortably, look at the center of the screen, then press Space to set your starting position.";
+    next.textContent = "Continue: look at the center";
+    target.hidden = false;
+    target.style.left = coordinates[0][0];
+    target.style.top = coordinates[0][1];
   }
 };
 next.onclick = advance;
