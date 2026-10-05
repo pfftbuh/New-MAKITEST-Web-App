@@ -58,7 +58,7 @@ class BrowserFlowTests(StaticLiveServerTestCase):
 
     def setUp(self):
         self.teacher = CustomUser.objects.create_user(
-            "qa-teacher", password="Temporary-QA-2026", role="teacher"
+            "qa-teacher", password="Temporary-QA-2026", role="teacher", authorized=True
         )
         self.student = CustomUser.objects.create_user(
             "qa-student",

@@ -25,7 +25,9 @@ class WebSocketAuthorizationTests(TransactionTestCase):
         self.other = CustomUser.objects.create_user(
             "other", role="student", class_designation="10-A"
         )
-        self.teacher = CustomUser.objects.create_user("teacher", role="teacher")
+        self.teacher = CustomUser.objects.create_user(
+            "teacher", role="teacher", authorized=True
+        )
         self.exam = Exam.objects.create(
             title="Science",
             description="Practice",

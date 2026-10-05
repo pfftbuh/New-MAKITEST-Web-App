@@ -18,7 +18,9 @@ class ExamFlowTests(TestCase):
         self.student = CustomUser.objects.create_user(
             "student", role="student", class_designation="10-A"
         )
-        self.teacher = CustomUser.objects.create_user("teacher", role="teacher")
+        self.teacher = CustomUser.objects.create_user(
+            "teacher", role="teacher", authorized=True
+        )
         self.other = CustomUser.objects.create_user(
             "other", role="student", class_designation="10-B"
         )

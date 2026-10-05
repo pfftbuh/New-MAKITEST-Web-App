@@ -21,6 +21,8 @@
 {% if user.role == 'student' %}
 <a href="{% url 'student_home' %}" {% if request.resolver_match.url_name == 'student_home' %}aria-current="page"{% endif %}>My Exams</a>
 <a href="{% url 'my_scores' %}" {% if request.resolver_match.url_name == 'my_scores' %}aria-current="page"{% endif %}>My Results</a>
+{% elif user.is_admin %}
+<a href="{% url 'admin_home' %}" {% if request.resolver_match.url_name == 'admin_home' %}aria-current="page"{% endif %}>Teacher Authorization</a>
 {% elif user.role == 'teacher' %}
 <a href="{% url 'teacher_home' %}" {% if request.resolver_match.url_name == 'teacher_home' %}aria-current="page"{% endif %}>Overview</a>
 <a href="{% url 'exams_list' %}" {% if request.resolver_match.url_name == 'exams_list' %}aria-current="page"{% endif %}>My Exams</a>

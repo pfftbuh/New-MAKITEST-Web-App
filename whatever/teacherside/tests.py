@@ -1,4 +1,6 @@
 from datetime import timedelta
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from django.test import TestCase
 from django.urls import reverse
@@ -11,8 +13,12 @@ from .models import Exam, Question
 
 class TeacherAccessAndEditingTests(TestCase):
     def setUp(self):
-        self.teacher = CustomUser.objects.create_user("teacher", role="teacher")
-        self.other = CustomUser.objects.create_user("other", role="teacher")
+        self.teacher = CustomUser.objects.create_user(
+            "teacher", role="teacher", authorized=True
+        )
+        self.other = CustomUser.objects.create_user(
+            "other", role="teacher", authorized=True
+        )
         self.student = CustomUser.objects.create_user(
             "student", role="student", class_designation="10-A"
         )
@@ -61,6 +67,52 @@ class TeacherAccessAndEditingTests(TestCase):
                 self.assertEqual(
                     self.client.get(reverse(name, args=args)).status_code, 200
                 )
+
+    def test_student_attempt_shows_violation_counts_from_exam_log(self):
+        attempt = StudentExamAttempt.objects.create(
+            student=self.student,
+            exam=self.exam,
+            attempt_number=1,
+            proctoring_session_id="attempt-session",
+        )
+        with TemporaryDirectory() as media_root:
+            exam_log = Path(media_root) / "sessions" / "attempt-session" / "exam.csv"
+            exam_log.parent.mkdir(parents=True)
+            exam_log.write_text(
+                "Gaze direction,Timestamp start,Timestamp finish,Violation label,Numerical behavioural score,Video Evidence File\n"
+                "Center,1,2,normal,0,\n"
+                "Center,2,3,forbidden_key_ctrl_c,100,clip.mp4\n"
+                "Center,3,4,forbidden_key_ctrl_c,100,clip.mp4\n"
+                "Center,4,5,Down-Center_duration,100,clip.mp4\n",
+                encoding="utf-8",
+            )
+            ProctoringSessionFiles.objects.create(
+                exam_attempt=attempt,
+                session_id="attempt-session",
+                session_directory="sessions/attempt-session",
+                session_log_csvs=[
+                    "sessions/attempt-session/calibration.csv",
+                    "sessions/attempt-session/exam.csv",
+                ],
+            )
+            with self.settings(MEDIA_ROOT=media_root):
+                response = self.client.get(
+                    reverse(
+                        "student_attempt_detail", args=[self.exam.pk, self.student.pk]
+                    )
+                )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Flagged Events By Type")
+        self.assertContains(response, "forbidden_key_ctrl_c")
+        self.assertContains(response, "Down-Center_duration")
+        self.assertEqual(
+            response.context["attempts"][0].violation_type_counts,
+            [
+                {"type": "Down-Center_duration", "count": 1},
+                {"type": "forbidden_key_ctrl_c", "count": 2},
+            ],
+        )
 
     def test_owner_scope_for_every_exam_action(self):
         self.client.force_login(self.other)

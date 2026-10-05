@@ -45,7 +45,21 @@
 </p>
 <p class="attempt-monitor"><strong>Monitoring:</strong>
 {% if attempt.monitoring_interrupted %}Incomplete — technical interruption{% elif not attempt.monitoring_started %}Not started{% elif not attempt.completed_at %}In progress{% else %}Session recorded{% endif %}
-&middot; {{ attempt.violation_count }} flagged events</p>{% if attempt.files %}
+&middot; {{ attempt.violation_count }} flagged events</p>
+<h3>Flagged Events By Type</h3>
+{% if attempt.violation_type_counts %}
+<table>
+<thead><tr><th scope="col">Violation Type</th><th scope="col">Count</th></tr></thead>
+<tbody>
+{% for item in attempt.violation_type_counts %}
+<tr><th scope="row">{{ item.type }}</th><td>{{ item.count }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}
+<p>No violation type counts are available for this session.</p>
+{% endif %}
+{% if attempt.files %}
 <h3>Recorded Event Clips</h3>
 <div class="clip-grid">
 {% for filename in attempt.video_filenames %}

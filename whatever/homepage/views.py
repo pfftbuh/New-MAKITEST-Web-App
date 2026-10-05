@@ -16,6 +16,8 @@ def landing_page(request):
 def signup_view(request):
     """Create a student account, then send them to the login page."""
     if request.user.is_authenticated:
+        if request.user.is_admin():
+            return redirect("admin_home")
         return redirect(
             "teacher_home" if request.user.role == "teacher" else "student_home"
         )
@@ -35,7 +37,9 @@ def signup_view(request):
 def login_view(request):
     # Only check role if the user is already authenticated
     if request.user.is_authenticated:
-        if request.user.role == "student":
+        if request.user.is_admin():
+            return redirect("admin_home")
+        elif request.user.role == "student":
             return redirect("student_home")
         elif request.user.role == "teacher":
             return redirect("teacher_home")
@@ -44,25 +48,31 @@ def login_view(request):
     form = AuthenticationForm(request, data=request.POST or None)
 
     if request.method == "POST" and form.is_valid():
-        auth_login(request, form.get_user())
-
-        next_url = request.POST.get("next", "")
-        from django.utils.http import url_has_allowed_host_and_scheme
-
-        if next_url and url_has_allowed_host_and_scheme(
-            next_url, {request.get_host()}, require_https=request.is_secure()
-        ):
-            return redirect(next_url)
-
-        # After login, redirect based on role
         user = form.get_user()
-        if user.role == "student":
-            return redirect("student_home")
-        elif user.role == "teacher":
-            return redirect("teacher_home")
+        if user.role == "teacher" and not user.authorized:
+            messages.error(
+                request,
+                "This teacher account is not authorized yet. Contact an administrator.",
+            )
+        else:
+            auth_login(request, user)
 
-        # Fallback if no role matched
-        return redirect("landing_page")
+            next_url = request.POST.get("next", "")
+            from django.utils.http import url_has_allowed_host_and_scheme
+
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url, {request.get_host()}, require_https=request.is_secure()
+            ):
+                return redirect(next_url)
+
+            if user.is_admin():
+                return redirect("admin_home")
+            elif user.role == "student":
+                return redirect("student_home")
+            elif user.role == "teacher":
+                return redirect("teacher_home")
+
+            return redirect("landing_page")
 
     return render(
         request,

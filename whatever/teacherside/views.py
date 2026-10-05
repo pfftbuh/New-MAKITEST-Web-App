@@ -1,7 +1,9 @@
+import csv
 import mimetypes
 import os
 import uuid
 import zipfile
+from collections import Counter
 from io import BytesIO
 
 from django.contrib import messages
@@ -26,6 +28,29 @@ from .models import Exam, Question
 
 def owned_exam(request, exam_id):
     return get_object_or_404(Exam, pk=exam_id, created_by=request.user)
+
+
+def violation_counts_for_session(files):
+    if not files:
+        return []
+    exam_csv_path = files.get_exam_csv_path()
+    if not exam_csv_path:
+        return []
+
+    counts = Counter()
+    try:
+        with open(exam_csv_path, newline="", encoding="utf-8-sig") as csv_file:
+            for row in csv.DictReader(csv_file):
+                violation_type = (row.get("Violation label") or "").strip()
+                if violation_type and violation_type.casefold() != "normal":
+                    counts[violation_type] += 1
+    except (OSError, UnicodeError, csv.Error):
+        return []
+
+    return [
+        {"type": violation_type, "count": count}
+        for violation_type, count in sorted(counts.items())
+    ]
 
 
 def publication_error(exam):
@@ -351,6 +376,7 @@ def student_attempt_detail(request, exam_id, student_id):
         attempt.files = ProctoringSessionFiles.objects.filter(
             exam_attempt=attempt
         ).first()
+        attempt.violation_type_counts = violation_counts_for_session(attempt.files)
         attempt.video_filenames = (
             [os.path.basename(path) for path in attempt.files.violation_videos]
             if attempt.files

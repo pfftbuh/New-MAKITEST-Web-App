@@ -92,6 +92,29 @@ class LoginTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("_auth_user_id", self.client.session)
 
+    def test_unauthorized_teacher_cannot_log_in(self):
+        teacher = User.objects.create_user(
+            "teacher1", password=self.password, role="teacher"
+        )
+        response = self.client.post(
+            reverse("login"),
+            {"username": teacher.username, "password": self.password},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "not authorized yet")
+        self.assertNotIn("_auth_user_id", self.client.session)
+
+    def test_authorized_teacher_can_log_in(self):
+        teacher = User.objects.create_user(
+            "teacher1", password=self.password, role="teacher", authorized=True
+        )
+        response = self.client.post(
+            reverse("login"),
+            {"username": teacher.username, "password": self.password},
+        )
+        self.assertRedirects(response, reverse("teacher_home"))
+        self.assertEqual(int(self.client.session["_auth_user_id"]), teacher.pk)
+
     def test_login_honours_safe_next(self):
         response = self.client.post(
             reverse("login"),
